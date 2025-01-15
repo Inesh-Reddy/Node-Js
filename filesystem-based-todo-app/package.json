@@ -1,0 +1,16 @@
+{
+  "name": "filesystem-based-todo-app",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "./src/app.js",
+  "scripts": {
+    "dev": "node ./src/app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "node-fetch": "^3.3.2"
+  }
+}
