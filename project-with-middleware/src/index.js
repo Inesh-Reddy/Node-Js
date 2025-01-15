@@ -20,7 +20,6 @@ const rateLimiter = (req, res, next) => {
   const userID = req.headers["user-id"];
 
   if (!userID) {
-    errorCount++;
     return res.status(400).json({ msg: "User ID is required" });
   }
 
@@ -30,7 +29,6 @@ const rateLimiter = (req, res, next) => {
     numberOfRequestsForuser[userID] += 1;
 
     if (numberOfRequestsForuser[userID] > 5) {
-      errorCount++;
       return res.status(429).json({ msg: "You exceeded the rate limit" });
     }
   }
@@ -43,7 +41,6 @@ const checkerMiddleware = (req, res, next) => {
   if (age >= 13) {
     next();
   } else {
-    errorCount++;
     res.json({
       msg: "Sorry you cannot hop on this ride...",
     });
@@ -51,6 +48,10 @@ const checkerMiddleware = (req, res, next) => {
 };
 
 app.use(checkerMiddleware, requestCountMiddleware, rateLimiter);
+
+const errorThrowing = () => {
+  throw new Error("Some Error...");
+};
 
 app.get("/ride1", (req, res, next) => {
   res.status(200).json({
@@ -61,10 +62,19 @@ app.get("/ride1", (req, res, next) => {
 });
 
 app.get("/ride2", (req, res, next) => {
+  errorThrowing();
   res.status(200).json({
     msg: "Rollarcoaster Ride completed successfully",
     currentReqsCount: requestCount,
     CurrentErroCount: errorCount,
+  });
+});
+
+app.use((err, req, res, next) => {
+  errorCount++;
+  console.log(errorCount);
+  res.status(404).json({
+    msg: errorCount,
   });
 });
 
