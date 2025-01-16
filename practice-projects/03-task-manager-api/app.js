@@ -1,6 +1,9 @@
 const express = require("express");
 const app = express();
 const tasks = require("./routes/tasks");
+const connectDB = require("./db/connect");
+const dotenv = require("dotenv");
+dotenv.config();
 
 app.use(express.json());
 
@@ -15,6 +18,16 @@ app.get("/test", (req, res) => {
 app.use("/api/v1/tasks", tasks);
 
 const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server is listening on port: ${PORT}...`);
-});
+const url = process.env.mongodb_URI;
+const init = async (url) => {
+  try {
+    await connectDB(url);
+    app.listen(PORT, () => {
+      console.log(`Server is listening on port: ${PORT}...`);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+init(url);
