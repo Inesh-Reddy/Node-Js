@@ -5,7 +5,7 @@ const getAllTasks = async (req, res) => {
   try {
     const tasks = await task.find({});
     res.status(201).json({
-      msg: tasks,
+      tasks: tasks,
     });
   } catch (error) {
     res.status(500).json({
@@ -38,7 +38,7 @@ const getSingleTasks = async (req, res) => {
       });
     } else {
       res.status(201).json({
-        msg: task,
+        task,
       });
     }
   } catch (error) {
@@ -49,7 +49,7 @@ const getSingleTasks = async (req, res) => {
 const updateTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
-    const updatedTask = await Task.findOneAndUpdate(
+    const task = await Task.findOneAndUpdate(
       {
         _id: taskID,
       },
@@ -60,7 +60,7 @@ const updateTask = async (req, res) => {
       }
     );
     res.status(201).json({
-      msg: updatedTask,
+      task,
     });
   } catch (error) {
     res.status(500).json({
@@ -72,9 +72,9 @@ const updateTask = async (req, res) => {
 const deleteTask = async (req, res) => {
   try {
     const { id: taskID } = req.params;
-    const deletedTask = await Task.findOneAndDelete({ _id: taskID });
+    const task = await Task.findOneAndDelete({ _id: taskID });
     res.status(201).json({
-      msg: deletedTask,
+      task,
     });
   } catch (error) {
     res.status(500).json({

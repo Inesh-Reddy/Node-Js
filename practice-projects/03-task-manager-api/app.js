@@ -5,15 +5,16 @@ const connectDB = require("./db/connect");
 const dotenv = require("dotenv");
 dotenv.config();
 
+app.use(express.static("./public"));
 app.use(express.json());
 
 console.log("Task Manager App");
 
-app.get("/test", (req, res) => {
-  res.json({
-    msg: "Welcome to taks manager api",
-  });
-});
+// app.get("/test", (req, res) => {
+//   res.json({
+//     msg: "Welcome to taks manager api",
+//   });
+// });
 
 app.use("/api/v1/tasks", tasks);
 
