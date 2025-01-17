@@ -1,4 +1,4 @@
-const getAllProductsStatic = () => {
+const getAllProductsStatic = (req, res) => {
   res.json({
     msg: `static products api...`,
   });
