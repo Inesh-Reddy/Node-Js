@@ -11,16 +11,15 @@ app.get("/test", (req, res) => {
 });
 
 app.use("/api/v1/products", products);
+const port = 3000;
 
-const init = async () => {
+const start = async () => {
   try {
     await connectDB(process.env.MongoDB_URI);
-    app.listen(3000, () => {
-      console.log(`Server is listening on port: 3000...`);
-    });
+    app.listen(port, () => console.log(`Server is listening port ${port}...`));
   } catch (error) {
-    console.log(`Couldn't connect to DB ...`);
+    console.log(error);
   }
 };
 
-init();
+start();

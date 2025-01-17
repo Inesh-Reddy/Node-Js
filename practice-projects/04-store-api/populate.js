@@ -7,11 +7,13 @@ const jsonProducts = require("./product.json");
 const init = async () => {
   try {
     await connectDB(process.env.MongoDB_URI);
-    app.listen(3000, () => {
-      console.log(`Server is listening on port: 3000...`);
-    });
+    await Product.deleteMany();
+    await Product.create(jsonProducts);
+    console.log(`Success...`);
+    process.exit(0);
   } catch (error) {
-    console.log(`Couldn't connect to DB ...`);
+    console.log(error);
+    process.exit(1);
   }
 };
 
