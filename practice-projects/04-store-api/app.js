@@ -15,6 +15,7 @@ const port = 3000;
 
 const start = async () => {
   try {
+    console.log(`Entered Start function`);
     await connectDB(process.env.MongoDB_URI);
     app.listen(port, () => console.log(`Server is listening port ${port}...`));
   } catch (error) {
