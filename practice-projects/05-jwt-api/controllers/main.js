@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const { auth } = require("../middlewares/auth");
-const secret = process.env.SECRET;
 
 const login = async (req, res) => {
   const { username, password } = req.body;
@@ -20,30 +18,12 @@ const login = async (req, res) => {
 };
 
 const dashboard = async (req, res) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return res.status(401).json({
-      msg: "No token provided",
-    });
-  }
-  const token = authHeader.split(" ")[1];
-  try {
-    const verified = jwt.verify(token, secret);
-    if (!verified) {
-      return res.status(401).json({
-        msg: "Invalid token",
-      });
-    }
-    const luckyNumber = Math.floor(Math.random() * 100);
-    return res.status(200).json({
-      msg: `Hello, ${verified.username || "User"}`,
-      secret: `Here is your authorized data: ${luckyNumber}`,
-    });
-  } catch (err) {
-    return res.status(400).json({
-      msg: "Not authorized to access this route",
-    });
-  }
+  const verified = req.user;
+  const luckyNumber = Math.floor(Math.random() * 100);
+  return res.status(200).json({
+    msg: `Hello, ${verified.username || "User"}`,
+    secret: `Here is your authorized data: ${luckyNumber}`,
+  });
 };
 
 module.exports = {
